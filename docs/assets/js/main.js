@@ -102,10 +102,12 @@ if(presentationCarousel){
 
   const goTo=(nextIndex)=>{
     const bounded=(nextIndex+slides.length)%slides.length;
-    slides[bounded]?.scrollIntoView({
-      behavior:reducedMotion.matches?"auto":"smooth",
-      block:"nearest",
-      inline:"center"
+    const slide=slides[bounded];
+    if(!slide) return;
+    const targetLeft=slide.offsetLeft-(track.clientWidth-slide.clientWidth)/2;
+    track.scrollTo({
+      left:targetLeft,
+      behavior:reducedMotion.matches?"auto":"smooth"
     });
     updateDots(bounded);
   };
