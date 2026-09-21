@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://kahcardim.github.io/CristianeTX/sitemap.xml

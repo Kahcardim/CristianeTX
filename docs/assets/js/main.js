@@ -92,11 +92,20 @@ if(presentationCarousel){
 
   const updateDots=(nextIndex)=>{
     index=Math.max(0,Math.min(slides.length-1,nextIndex));
+    slides.forEach((slide,i)=>{
+      const active=i===index;
+      slide.setAttribute("aria-hidden",String(!active));
+      slide.querySelectorAll("a,button").forEach((control)=>{
+        if(active) control.removeAttribute("tabindex");
+        else control.setAttribute("tabindex","-1");
+      });
+    });
     dots.forEach((dot,i)=>{
       const active=i===index;
       dot.classList.toggle("is-active",active);
       if(active) dot.setAttribute("aria-current","true");
       else dot.removeAttribute("aria-current");
+      dot.setAttribute("aria-pressed",String(active));
     });
   };
 

@@ -27,13 +27,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prepare production bundle
+        run: |
+          rm -rf dist
+          cp -R docs dist
+          npx --yes esbuild@0.25.9 docs/assets/css/styles.css --minify --outfile=dist/assets/css/styles.css
+          npx --yes esbuild@0.25.9 docs/assets/js/main.js --minify --outfile=dist/assets/js/main.js
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ./docs
+          path: ./dist
 
       - name: Deploy
         id: deployment
