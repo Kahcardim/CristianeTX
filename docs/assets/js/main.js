@@ -34,3 +34,44 @@ Object.entries(preferences).forEach(([name,query])=>{
 });
 
 document.documentElement.dataset.a11yNative="ready";
+
+
+/* Context navigation stays synchronized with the section in view. */
+const subnavLinks=[...document.querySelectorAll(".page-subnav a[href^='#']")];
+if(subnavLinks.length){
+  const targets=subnavLinks
+    .map((link)=>document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  subnavLinks.forEach((link)=>{
+    link.addEventListener("click",(event)=>{
+      const target=document.querySelector(link.getAttribute("href"));
+      if(!target) return;
+      event.preventDefault();
+      target.scrollIntoView({
+        behavior:reducedMotion.matches?"auto":"smooth",
+        block:"start"
+      });
+      history.replaceState(null,"",link.getAttribute("href"));
+    });
+  });
+
+  const observer=new IntersectionObserver((entries)=>{
+    const visible=entries
+      .filter((entry)=>entry.isIntersecting)
+      .sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+    if(!visible) return;
+    const id="#"+visible.target.id;
+    subnavLinks.forEach((link)=>{
+      if(link.getAttribute("href")===id) link.setAttribute("aria-current","location");
+      else link.removeAttribute("aria-current");
+    });
+  },{
+    rootMargin:"-25% 0px -55% 0px",
+    threshold:[0,.25,.5,.75]
+  });
+
+  targets.forEach((target)=>observer.observe(target));
+}
