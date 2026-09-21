@@ -1,4 +1,7 @@
 :root {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   --navy: #0f2138;
   --navy-2: #172f4c;
   --gold: #b89558;
@@ -197,6 +200,26 @@ section,
 }
 
 .button:hover { transform: translateY(-2px); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 2px var(--paper);
+}
+
+button,
+input,
+select,
+textarea,
+.button {
+  min-height: 44px;
+}
 
 .button-primary { background: var(--navy); color: var(--white); }
 .button-outline { border-color: var(--navy); color: var(--navy); }
@@ -832,4 +855,120 @@ section,
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
   }
+}
+
+
+/* Preferências nativas do sistema e tecnologias assistivas */
+@media (prefers-contrast: more) {
+  a:not(.button) {
+    text-decoration-thickness: 2px;
+    text-underline-offset: .18em;
+  }
+
+  .site-header,
+  .button,
+  .practice-card,
+  .article-grid,
+  .article-grid article,
+  .portrait-frame,
+  .signature-card {
+    border-width: 2px !important;
+  }
+
+  .hero-text,
+  .section-heading > p,
+  .statement-grid > div p,
+  .practice-card p,
+  .about-panel > p:not(.section-index),
+  .article-grid p,
+  .contact-copy p {
+    color: currentColor;
+    opacity: .9;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-header {
+    background: var(--paper);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .practice-card {
+    background: var(--paper);
+  }
+}
+
+@media (pointer: coarse) {
+  a.button,
+  button,
+  .main-nav a,
+  .text-link {
+    min-height: 44px;
+  }
+
+  .main-nav a,
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+@media (forced-colors: active) {
+  :root {
+    forced-color-adjust: auto;
+  }
+
+  body,
+  .site-header,
+  .hero,
+  .statement,
+  .practice,
+  .about,
+  .articles,
+  .contact,
+  .site-footer,
+  .practice-card,
+  .article-grid article,
+  .portrait-frame,
+  .signature-card {
+    box-shadow: none !important;
+  }
+
+  .button,
+  button,
+  .practice-card,
+  .article-grid,
+  .article-grid article,
+  .portrait-frame,
+  .signature-card {
+    border: 2px solid ButtonText !important;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid Highlight;
+    box-shadow: none;
+  }
+
+  .main-nav a,
+  .text-link,
+  .practice-card a {
+    color: LinkText !important;
+  }
+}
+
+/* Estado espelhado em atributos para componentes JS futuros */
+html[data-a11y-reduced-motion="true"] {
+  scroll-behavior: auto;
+}
+
+html[data-a11y-reduced-transparency="true"] .site-header {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
