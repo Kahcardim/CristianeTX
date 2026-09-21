@@ -17,3 +17,27 @@ if (menuButton && menu) {
     });
   });
 }
+
+
+const nativeAccessibilityPreferences = {
+  reducedMotion: "(prefers-reduced-motion: reduce)",
+  moreContrast: "(prefers-contrast: more)",
+  forcedColors: "(forced-colors: active)",
+  reducedTransparency: "(prefers-reduced-transparency: reduce)"
+};
+
+Object.entries(nativeAccessibilityPreferences).forEach(([name, query]) => {
+  const media = window.matchMedia(query);
+  const attribute =
+    "data-a11y-" +
+    name.replace(/[A-Z]/g, (letter) => "-" + letter.toLowerCase());
+
+  const update = () => {
+    document.documentElement.setAttribute(attribute, String(media.matches));
+  };
+
+  update();
+  media.addEventListener?.("change", update);
+});
+
+document.documentElement.dataset.a11yNative = "ready";
