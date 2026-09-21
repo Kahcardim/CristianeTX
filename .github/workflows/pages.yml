@@ -32,6 +32,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Validate site structure
+        run: node scripts/validate-site.mjs
+
       - name: Prepare production bundle
         run: |
           rm -rf dist

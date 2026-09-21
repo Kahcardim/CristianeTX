@@ -5,15 +5,12 @@ const year=document.querySelector("[data-year]");
 if(year) year.textContent=new Date().getFullYear();
 
 if(menuButton&&menu){
-  menuButton.addEventListener("click",()=>{
-    const open=menu.classList.toggle("is-open");
-    menuButton.setAttribute("aria-expanded",String(open));
-  });
-
   menu.querySelectorAll("a").forEach((link)=>{
     link.addEventListener("click",()=>{
       menu.classList.remove("is-open");
       menuButton.setAttribute("aria-expanded","false");
+      const label=menuButton.querySelector(".sr-only");
+      if(label) label.textContent="Abrir menu";
     });
   });
 }
@@ -197,3 +194,32 @@ if(presentationCarousel){
 
   document.body.append(trigger,panel);
 })();
+
+
+/* Mobile navigation regression guards */
+if(menuButton && menu){
+  const setMenuOpen=(open)=>{
+    menu.classList.toggle("is-open",open);
+    menuButton.setAttribute("aria-expanded",String(open));
+    const label=menuButton.querySelector(".sr-only");
+    if(label) label.textContent=open?"Fechar menu":"Abrir menu";
+  };
+
+  menuButton.addEventListener("click",()=>{
+    const open=menuButton.getAttribute("aria-expanded")!=="true";
+    setMenuOpen(open);
+  });
+
+  document.addEventListener("keydown",(event)=>{
+    if(event.key==="Escape" && menuButton.getAttribute("aria-expanded")==="true"){
+      setMenuOpen(false);
+      menuButton.focus();
+    }
+  });
+
+  document.addEventListener("pointerdown",(event)=>{
+    if(menuButton.getAttribute("aria-expanded")!=="true") return;
+    if(menu.contains(event.target) || menuButton.contains(event.target)) return;
+    setMenuOpen(false);
+  });
+}
