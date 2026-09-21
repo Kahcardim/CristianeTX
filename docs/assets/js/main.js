@@ -139,3 +139,61 @@ if(presentationCarousel){
 
   slides.forEach((slide)=>observer.observe(slide));
 }
+
+
+/* Small cookie information menu. No non-essential cookies are enabled in this version. */
+(() => {
+  const script = document.querySelector('script[src*="assets/js/main.js"]');
+  const scriptUrl = script ? new URL(script.src, window.location.href) : new URL(window.location.href);
+  const siteBase = script ? scriptUrl.href.replace(/assets\/js\/main\.js(?:\?.*)?$/,"") : "./";
+
+  const trigger = document.createElement("button");
+  trigger.type = "button";
+  trigger.className = "cookie-mini";
+  trigger.textContent = "Cookies";
+  trigger.setAttribute("aria-expanded","false");
+  trigger.setAttribute("aria-controls","cookie-info-panel");
+
+  const panel = document.createElement("aside");
+  panel.id = "cookie-info-panel";
+  panel.className = "cookie-panel";
+  panel.hidden = true;
+  panel.setAttribute("aria-label","Informações sobre cookies");
+  panel.innerHTML = `
+    <strong>Cookies e privacidade</strong>
+    <p>Esta versão não usa cookies analíticos ou publicitários. O menu existe para manter essa informação acessível sem interromper a navegação.</p>
+    <div class="cookie-panel-actions">
+      <a href="${siteBase}cookies/">Ver aviso</a>
+      <button type="button" class="cookie-close">Fechar</button>
+    </div>
+  `;
+
+  const closeButton = panel.querySelector(".cookie-close");
+
+  const setOpen = (open) => {
+    panel.hidden = !open;
+    trigger.setAttribute("aria-expanded",String(open));
+    if(open) closeButton?.focus();
+  };
+
+  trigger.addEventListener("click",() => setOpen(panel.hidden));
+  closeButton?.addEventListener("click",() => {
+    setOpen(false);
+    trigger.focus();
+  });
+
+  document.addEventListener("keydown",(event) => {
+    if(event.key === "Escape" && !panel.hidden){
+      setOpen(false);
+      trigger.focus();
+    }
+  });
+
+  document.addEventListener("pointerdown",(event) => {
+    if(panel.hidden) return;
+    if(panel.contains(event.target) || trigger.contains(event.target)) return;
+    setOpen(false);
+  });
+
+  document.body.append(trigger,panel);
+})();
