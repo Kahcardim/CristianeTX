@@ -32,6 +32,15 @@ Object.entries(preferences).forEach(([name,query])=>{
 
 document.documentElement.dataset.a11yNative="ready";
 
+const internalPage = !document.querySelector("main > .hero") &&
+  document.querySelector("main > section, main > .detail-section, main > .prose-section");
+if(internalPage){
+  document.documentElement.classList.add("section-snap-page");
+  if(document.querySelector(".page-subnav")){
+    document.documentElement.classList.add("has-page-subnav");
+  }
+}
+
 
 /* Context navigation stays synchronized with the section in view. */
 const subnavLinks=[...document.querySelectorAll(".page-subnav a[href^='#']")];
