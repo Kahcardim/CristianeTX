@@ -44,22 +44,28 @@ if(internalPage){
 
 /* Context navigation stays synchronized with the section in view. */
 const subnavLinks=[...document.querySelectorAll(".page-subnav a[href^='#']")];
-if(subnavLinks.length){
-  const targets=subnavLinks
+{
+  const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
+  const subnavTargets=subnavLinks
     .map((link)=>document.querySelector(link.getAttribute("href")))
     .filter(Boolean);
 
-  const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
+  const genericTargets=[...document.querySelectorAll("main > section")]
+    .filter((section)=>section.getBoundingClientRect().height>120);
+
+  const alignTargets=subnavTargets.length ? subnavTargets : genericTargets;
   let programmaticScroll=false;
   let settleTimer=null;
 
   const fixedOffset=()=>{
     const header=document.querySelector(".site-header")?.getBoundingClientRect().height||0;
-    const subnav=document.querySelector(".page-subnav")?.getBoundingClientRect().height||0;
-    return header+subnav+14;
+    const subnav=document.querySelector(".page-subnav");
+    const subnavHeight=subnav ? subnav.getBoundingClientRect().height : 0;
+    return header+subnavHeight+14;
   };
 
   const setCurrentSubnav=(href)=>{
+    if(!subnavLinks.length) return;
     subnavLinks.forEach((link)=>{
       if(link.getAttribute("href")===href) link.setAttribute("aria-current","location");
       else link.removeAttribute("aria-current");
@@ -67,9 +73,10 @@ if(subnavLinks.length){
   };
 
   const syncCurrentSubnav=()=>{
+    if(!subnavTargets.length) return;
     const offset=fixedOffset()+12;
-    let current=targets[0];
-    targets.forEach((target)=>{
+    let current=subnavTargets[0];
+    subnavTargets.forEach((target)=>{
       if(target.getBoundingClientRect().top<=offset) current=target;
     });
     if(current?.id) setCurrentSubnav("#"+current.id);
@@ -85,7 +92,7 @@ if(subnavLinks.length){
     window.setTimeout(()=>{
       programmaticScroll=false;
       syncCurrentSubnav();
-    },reducedMotion.matches?0:650);
+    },reducedMotion.matches?0:560);
   };
 
   subnavLinks.forEach((link)=>{
@@ -100,33 +107,39 @@ if(subnavLinks.length){
     });
   });
 
-  const initialHref=
-    location.hash && subnavLinks.some((link)=>link.getAttribute("href")===location.hash)
-      ? location.hash
-      : subnavLinks[0].getAttribute("href");
-  setCurrentSubnav(initialHref);
+  if(subnavLinks.length){
+    const initialHref=
+      location.hash && subnavLinks.some((link)=>link.getAttribute("href")===location.hash)
+        ? location.hash
+        : subnavLinks[0].getAttribute("href");
+    setCurrentSubnav(initialHref);
+  }
 
   window.addEventListener("scroll",()=>{
     if(programmaticScroll) return;
     syncCurrentSubnav();
-    if(reducedMotion.matches) return;
+    if(reducedMotion.matches || !alignTargets.length) return;
 
     window.clearTimeout(settleTimer);
     settleTimer=window.setTimeout(()=>{
       const offset=fixedOffset();
-      const candidate=targets
+      const candidate=alignTargets
         .map((target)=>({target,delta:target.getBoundingClientRect().top-offset}))
-        .filter(({delta})=>Math.abs(delta)<=36)
+        .filter(({delta})=>Math.abs(delta)<=32)
         .sort((a,b)=>Math.abs(a.delta)-Math.abs(b.delta))[0];
 
       if(!candidate || Math.abs(candidate.delta)<8) return;
+
       programmaticScroll=true;
-      window.scrollBy({top:candidate.delta,behavior:"smooth"});
+      window.scrollBy({
+        top:candidate.delta,
+        behavior:"smooth"
+      });
       window.setTimeout(()=>{
         programmaticScroll=false;
         syncCurrentSubnav();
-      },500);
-    },220);
+      },360);
+    },240);
   },{passive:true});
 
   window.addEventListener("resize",syncCurrentSubnav,{passive:true});
@@ -196,61 +209,50 @@ if(presentationCarousel){
 }
 
 
-/* Small cookie information menu. No non-essential cookies are enabled in this version. */
+/* First-visit cookie information notice. No non-essential cookies are enabled. */
 (() => {
-  const script = document.querySelector('script[src*="assets/js/main.js"]');
-  const scriptUrl = script ? new URL(script.src, window.location.href) : new URL(window.location.href);
-  const siteBase = script ? scriptUrl.href.replace(/assets\/js\/main\.js(?:\?.*)?$/,"") : "./";
+  const storageKey="ct-cookie-notice-v1";
+  let acknowledged=false;
 
-  const trigger = document.createElement("button");
-  trigger.type = "button";
-  trigger.className = "cookie-mini";
-  trigger.textContent = "Cookies";
-  trigger.setAttribute("aria-expanded","false");
-  trigger.setAttribute("aria-controls","cookie-info-panel");
+  try{
+    acknowledged=localStorage.getItem(storageKey)==="acknowledged";
+  }catch{}
 
-  const panel = document.createElement("aside");
-  panel.id = "cookie-info-panel";
-  panel.className = "cookie-panel";
-  panel.hidden = true;
-  panel.setAttribute("aria-label","Informações sobre cookies");
-  panel.innerHTML = `
-    <strong>Cookies e privacidade</strong>
-    <p>Esta versão não usa cookies analíticos ou publicitários. O menu existe para manter essa informação acessível sem interromper a navegação.</p>
-    <div class="cookie-panel-actions">
-      <a href="${siteBase}cookies/">Ver aviso</a>
-      <button type="button" class="cookie-close">Fechar</button>
+  if(acknowledged) return;
+
+  const script=document.querySelector('script[src*="assets/js/main.js"]');
+  const scriptUrl=script ? new URL(script.src,window.location.href) : new URL(window.location.href);
+  const siteBase=script ? scriptUrl.href.replace(/assets\/js\/main\.js(?:\?.*)?$/,"") : "./";
+
+  const notice=document.createElement("aside");
+  notice.className="cookie-notice";
+  notice.setAttribute("role","region");
+  notice.setAttribute("aria-label","Aviso de cookies e privacidade");
+  notice.innerHTML=`
+    <div class="cookie-notice-copy">
+      <strong>Privacidade e cookies</strong>
+      <p>Este site não utiliza cookies analíticos ou publicitários nesta versão. Mantemos este aviso para informar com transparência como a navegação é tratada.</p>
+    </div>
+    <div class="cookie-notice-actions">
+      <a href="${siteBase}cookies/">Saiba mais</a>
+      <button type="button" class="cookie-ack">Entendi</button>
     </div>
   `;
 
-  const closeButton = panel.querySelector(".cookie-close");
-
-  const setOpen = (open) => {
-    panel.hidden = !open;
-    trigger.setAttribute("aria-expanded",String(open));
-    if(open) closeButton?.focus();
+  const acknowledge=()=>{
+    try{
+      localStorage.setItem(storageKey,"acknowledged");
+    }catch{}
+    notice.classList.remove("is-visible");
+    window.setTimeout(()=>notice.remove(),240);
   };
 
-  trigger.addEventListener("click",() => setOpen(panel.hidden));
-  closeButton?.addEventListener("click",() => {
-    setOpen(false);
-    trigger.focus();
-  });
+  notice.querySelector(".cookie-ack")?.addEventListener("click",acknowledge);
+  document.body.append(notice);
 
-  document.addEventListener("keydown",(event) => {
-    if(event.key === "Escape" && !panel.hidden){
-      setOpen(false);
-      trigger.focus();
-    }
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>notice.classList.add("is-visible"));
   });
-
-  document.addEventListener("pointerdown",(event) => {
-    if(panel.hidden) return;
-    if(panel.contains(event.target) || trigger.contains(event.target)) return;
-    setOpen(false);
-  });
-
-  document.body.append(trigger,panel);
 })();
 
 
