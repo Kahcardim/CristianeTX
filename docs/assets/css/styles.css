@@ -3144,3 +3144,179 @@ html.section-snap-page.has-page-subnav{
     color:var(--gold-soft);
   }
 }
+
+
+/* Office opening viewport fix + mobile photographic background */
+@media(min-width:981px){
+  .office-intro-featured{
+    min-height:calc(100svh - 86px);
+    display:grid;
+    align-items:center;
+    padding:32px 0 38px;
+  }
+
+  .office-profile-featured{
+    align-items:center;
+  }
+
+  .office-profile-featured .office-profile-photo{
+    height:min(540px,calc(100svh - 170px));
+    min-height:420px;
+    max-height:540px;
+    aspect-ratio:auto;
+  }
+
+  .office-profile-featured .office-profile-copy h1{
+    font-size:clamp(2.8rem,4.2vw,4.2rem);
+  }
+
+  .office-profile-featured .office-profile-copy .lead{
+    margin-top:20px;
+  }
+
+  .office-profile-featured .institution-facts{
+    margin-top:24px;
+  }
+}
+
+@media(min-width:981px) and (max-height:760px){
+  .office-intro-featured{
+    padding:22px 0 26px;
+  }
+
+  .office-profile-featured .office-profile-photo{
+    height:calc(100svh - 150px);
+    min-height:370px;
+  }
+
+  .office-profile-featured .office-profile-copy h1{
+    font-size:clamp(2.45rem,3.8vw,3.6rem);
+  }
+
+  .office-profile-featured .office-profile-copy .lead{
+    margin-top:16px;
+    font-size:1rem;
+  }
+
+  .office-profile-featured .office-profile-copy>p:not(.eyebrow):not(.lead){
+    margin-top:10px;
+    line-height:1.58;
+  }
+
+  .office-profile-featured .institution-facts{
+    margin-top:18px;
+    padding-top:16px;
+  }
+}
+
+@media(max-width:680px){
+  .office-intro-featured{
+    --office-mobile-photo:url("../images/office-profile-black.webp");
+    min-height:calc(100svh - 70px);
+    display:flex;
+    align-items:flex-end;
+    padding:0;
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+    background:
+      linear-gradient(180deg,rgba(8,20,34,.08) 0%,rgba(8,20,34,.34) 36%,rgba(8,20,34,.93) 100%),
+      var(--office-mobile-photo),
+      linear-gradient(145deg,#18324f,#0d1f33);
+    background-size:cover;
+    background-position:center 18%;
+  }
+
+  .office-intro-featured::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background:linear-gradient(90deg,rgba(184,149,88,.04) 1px,transparent 1px) 0 0/72px 72px;
+    pointer-events:none;
+  }
+
+  .office-profile-featured{
+    display:block;
+    width:100%;
+    padding:38vh 14px 20px;
+  }
+
+  .office-profile-featured .office-profile-copy{
+    width:min(100%,520px);
+    margin-inline:auto;
+    padding:20px 18px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(8,20,34,.80);
+    backdrop-filter:blur(7px);
+    color:#fff;
+    text-align:left;
+  }
+
+  .office-profile-featured .office-profile-copy .eyebrow{
+    margin-bottom:10px;
+    color:var(--gold-soft);
+    font-size:9px;
+  }
+
+  .office-profile-featured .office-profile-copy h1{
+    max-width:14ch;
+    color:#fff;
+    font-size:clamp(2.05rem,9.6vw,2.8rem);
+    line-height:1.04;
+  }
+
+  .office-profile-featured .office-profile-copy .lead{
+    margin:14px 0 0;
+    color:#f3f1eb;
+    font-size:.96rem;
+    line-height:1.5;
+  }
+
+  .office-profile-featured .office-profile-copy>p:not(.eyebrow):not(.lead){
+    margin:10px 0 0;
+    color:#d2d9e0;
+    font-size:.84rem;
+    line-height:1.5;
+  }
+
+  .office-profile-featured .institution-facts{
+    margin-top:16px;
+    padding-top:14px;
+    border-top-color:rgba(255,255,255,.18);
+  }
+
+  .office-profile-featured .institution-facts dt{
+    color:#b5c0cb;
+  }
+
+  .office-profile-featured .institution-facts dd{
+    color:#fff;
+  }
+
+  .office-profile-featured .office-profile-photo{
+    display:none;
+  }
+}
+
+@media(max-width:380px){
+  .office-profile-featured{
+    padding:34vh 10px 14px;
+  }
+
+  .office-profile-featured .office-profile-copy{
+    padding:18px 14px;
+  }
+
+  .office-profile-featured .office-profile-copy h1{
+    font-size:clamp(1.9rem,9.4vw,2.35rem);
+  }
+
+  .office-profile-featured .office-profile-copy>p:not(.eyebrow):not(.lead){
+    font-size:.8rem;
+  }
+
+  .office-profile-featured .institution-facts{
+    gap:8px;
+  }
+}

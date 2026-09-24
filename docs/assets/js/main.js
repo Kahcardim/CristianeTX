@@ -116,17 +116,17 @@ if(subnavLinks.length){
       const offset=fixedOffset();
       const candidate=targets
         .map((target)=>({target,delta:target.getBoundingClientRect().top-offset}))
-        .filter(({delta})=>Math.abs(delta)<=160)
+        .filter(({delta})=>Math.abs(delta)<=36)
         .sort((a,b)=>Math.abs(a.delta)-Math.abs(b.delta))[0];
 
-      if(!candidate || Math.abs(candidate.delta)<3) return;
+      if(!candidate || Math.abs(candidate.delta)<8) return;
       programmaticScroll=true;
       window.scrollBy({top:candidate.delta,behavior:"smooth"});
       window.setTimeout(()=>{
         programmaticScroll=false;
         syncCurrentSubnav();
       },500);
-    },170);
+    },220);
   },{passive:true});
 
   window.addEventListener("resize",syncCurrentSubnav,{passive:true});
