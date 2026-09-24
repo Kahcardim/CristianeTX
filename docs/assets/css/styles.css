@@ -2378,3 +2378,44 @@ article[id]{
     scroll-margin-top:84px;
   }
 }
+
+
+/* Official identity and approved photographic crops */
+.brand-mark{
+  width:46px;
+  height:46px;
+  padding:2px;
+  border:0;
+  background:transparent;
+}
+.brand-mark img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:contain;
+}
+.portrait-frame{
+  --photo-position:center 34%;
+}
+.portrait-frame img{
+  object-position:var(--photo-position);
+}
+@media(max-width:680px){
+  .hero{
+    --hero-profile-image:url("../images/hero-mobile.webp");
+    --hero-photo-position:center center;
+    background-position:var(--hero-photo-position);
+  }
+}
+@media(max-width:480px){
+  .brand-mark{
+    width:40px;
+    height:40px;
+  }
+}
+@media(max-width:380px){
+  .brand-mark{
+    width:36px;
+    height:36px;
+  }
+}
