@@ -107,15 +107,16 @@ if(subnavLinks.length){
   setCurrentSubnav(initialHref);
 
   window.addEventListener("scroll",()=>{
+    if(programmaticScroll) return;
     syncCurrentSubnav();
-    if(programmaticScroll || reducedMotion.matches) return;
+    if(reducedMotion.matches) return;
 
     window.clearTimeout(settleTimer);
     settleTimer=window.setTimeout(()=>{
       const offset=fixedOffset();
       const candidate=targets
         .map((target)=>({target,delta:target.getBoundingClientRect().top-offset}))
-        .filter(({delta})=>Math.abs(delta)<=90)
+        .filter(({delta})=>Math.abs(delta)<=160)
         .sort((a,b)=>Math.abs(a.delta)-Math.abs(b.delta))[0];
 
       if(!candidate || Math.abs(candidate.delta)<3) return;
