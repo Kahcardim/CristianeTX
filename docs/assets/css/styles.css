@@ -3100,3 +3100,47 @@ html.section-snap-page.has-page-subnav{
     min-height:44px;
   }
 }
+
+
+/* Final UX QA: accessible gold text and non-obstructive floating action */
+:root{
+  --gold-text:#84632e;
+}
+
+.eyebrow,
+.section-index,
+.hero-overline,
+.presentation-index,
+.preview-card .number,
+.editorial-card span,
+.practice-row .number,
+.prose-aside,
+.detail-label,
+.info-card>span,
+.service-entry>span,
+.content-directory>a>span,
+.contact-channel>span:first-child,
+.contact-flow-steps span{
+  color:var(--gold-text);
+}
+
+.section-dark .eyebrow{
+  color:var(--gold-soft);
+}
+
+.whatsapp-float{
+  transition:opacity .18s ease,transform .18s ease;
+}
+
+.whatsapp-float.is-context-hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(8px);
+}
+
+@media(max-width:680px){
+  .hero .hero-overline{
+    color:var(--gold-soft);
+  }
+}

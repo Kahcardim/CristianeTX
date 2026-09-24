@@ -283,28 +283,49 @@ if(menuButton && menu){
 }
 
 
+
+
 /* Avoid covering primary actions with the floating WhatsApp control on small screens. */
 (() => {
   const floating=document.querySelector(".whatsapp-float");
-  if(!floating || !("IntersectionObserver" in window)) return;
+  if(!floating) return;
 
   const mobile=window.matchMedia("(max-width: 680px)");
-  const zones=[...document.querySelectorAll(".hero-actions, #whatsapp, .final-cta-actions")];
-  const visibleZones=new Set();
+  const zones=[...document.querySelectorAll(".hero-actions, .contact-channel-grid, .final-cta-actions")];
+  let scheduled=false;
+
+  const overlaps=(a,b)=>(
+    a.left < b.right &&
+    a.right > b.left &&
+    a.top < b.bottom &&
+    a.bottom > b.top
+  );
 
   const update=()=>{
-    floating.classList.toggle("is-context-hidden",mobile.matches && visibleZones.size>0);
+    scheduled=false;
+    if(!mobile.matches){
+      floating.classList.remove("is-context-hidden");
+      return;
+    }
+
+    const floatingRect=floating.getBoundingClientRect();
+    const blocked=zones.some((zone)=>{
+      const style=getComputedStyle(zone);
+      if(style.display==="none" || style.visibility==="hidden") return false;
+      return overlaps(floatingRect,zone.getBoundingClientRect());
+    });
+
+    floating.classList.toggle("is-context-hidden",blocked);
   };
 
-  const observer=new IntersectionObserver((entries)=>{
-    entries.forEach((entry)=>{
-      if(entry.isIntersecting) visibleZones.add(entry.target);
-      else visibleZones.delete(entry.target);
-    });
-    update();
-  },{threshold:.12});
+  const schedule=()=>{
+    if(scheduled) return;
+    scheduled=true;
+    requestAnimationFrame(update);
+  };
 
-  zones.forEach((zone)=>observer.observe(zone));
-  mobile.addEventListener?.("change",update);
-  update();
+  window.addEventListener("scroll",schedule,{passive:true});
+  window.addEventListener("resize",schedule,{passive:true});
+  mobile.addEventListener?.("change",schedule);
+  schedule();
 })();
