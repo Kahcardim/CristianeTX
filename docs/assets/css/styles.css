@@ -2884,18 +2884,10 @@ article[id]{
 
 /* Internal-page editorial snap and Office lead composition */
 html.section-snap-page{
-  scroll-snap-type:y proximity;
   scroll-padding-top:96px;
 }
 html.section-snap-page.has-page-subnav{
   scroll-padding-top:142px;
-}
-html.section-snap-page main>section[id]{
-  scroll-snap-align:start;
-  scroll-snap-stop:normal;
-}
-html.section-snap-page main>.final-cta{
-  scroll-snap-align:end;
 }
 
 .office-intro-featured{
