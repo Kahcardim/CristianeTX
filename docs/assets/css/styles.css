@@ -2448,3 +2448,108 @@ article[id]{
     margin-inline:auto;
   }
 }
+
+
+/* Office page: keep personal portrait separate from future office photography */
+.office-profile .photo-slot-portrait{
+  max-width:380px;
+}
+
+.office-space-placeholders{
+  align-items:stretch;
+}
+
+.office-space-card{
+  position:relative;
+  min-height:320px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:32px;
+  overflow:hidden;
+  border:1px solid rgba(184,149,88,.42);
+  background:
+    linear-gradient(135deg,rgba(184,149,88,.08),transparent 48%),
+    linear-gradient(145deg,#17304b,#0d1f33);
+  color:#fff;
+}
+
+.office-space-card::before{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border:1px solid rgba(216,196,154,.20);
+  pointer-events:none;
+}
+
+.office-space-card::after{
+  content:"CT";
+  position:absolute;
+  right:26px;
+  bottom:10px;
+  color:rgba(216,196,154,.08);
+  font:400 clamp(5rem,10vw,8rem)/1 var(--serif);
+  pointer-events:none;
+}
+
+.office-space-index{
+  position:relative;
+  z-index:1;
+  color:var(--gold-soft);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+
+.office-space-card>div{
+  position:relative;
+  z-index:1;
+  max-width:410px;
+}
+
+.office-space-card strong{
+  display:block;
+  color:#fff;
+  font:400 clamp(1.8rem,3vw,2.6rem)/1.08 var(--serif);
+}
+
+.office-space-card p{
+  margin:12px 0 0;
+  color:#c7d0da;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.office-space-card small{
+  position:relative;
+  z-index:1;
+  color:#9facb9;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+@media(max-width:680px){
+  .office-profile .photo-slot-portrait{
+    max-width:340px;
+  }
+
+  .office-space-card{
+    min-height:270px;
+    padding:26px 22px;
+    text-align:center;
+  }
+
+  .office-space-card>div{
+    margin-inline:auto;
+  }
+
+  .office-space-card strong{
+    font-size:clamp(1.65rem,8vw,2.1rem);
+  }
+
+  .office-space-card p{
+    font-size:.9rem;
+  }
+}
