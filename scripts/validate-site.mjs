@@ -33,9 +33,15 @@ for(const file of htmlFiles){
   if(duplicates.length) errors.push(`${rel}: IDs duplicados: ${duplicates.join(", ")}`);
 
   for(const match of html.matchAll(/<img\b[^>]*>/gi)){
-    if(!/\salt=/.test(match[0])) errors.push(`${rel}: imagem sem atributo alt`);
-    if(!/\swidth=/.test(match[0]) || !/\sheight=/.test(match[0])){
+    const tag=match[0];
+    if(!/\salt=/.test(tag)) errors.push(`${rel}: imagem sem atributo alt`);
+    if(!/\swidth=/.test(tag) || !/\sheight=/.test(tag)){
       errors.push(`${rel}: imagem sem width/height explícitos`);
+    }
+    const src=(tag.match(/\ssrc="([^"]+)"/i)||[])[1];
+    const target=resolveLocal(file,src);
+    if(target && !existing.has(target)){
+      errors.push(`${rel}: imagem local quebrada ${src} -> ${target}`);
     }
   }
 

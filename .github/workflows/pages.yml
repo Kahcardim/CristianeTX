@@ -32,6 +32,11 @@ jobs:
         with:
           node-version: 22
 
+      - name: Generate photographic assets
+        run: |
+          node scripts/build-images.mjs docs/assets/images
+          cp docs/assets/images/brand-symbol.webp docs/assets/images/logo-symbol.webp
+
       - name: Validate site structure
         run: node scripts/validate-site.mjs
 

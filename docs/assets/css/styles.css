@@ -1609,7 +1609,7 @@ article[id]{
   }
 
   .hero{
-    --hero-profile-image:url("../images/cristiane-profile.webp");
+    --hero-profile-image:url("../images/hero-mobile.webp");
     min-height:calc(100svh - 70px);
     display:grid;
     align-items:end;
@@ -2417,5 +2417,34 @@ article[id]{
   .brand-mark{
     width:36px;
     height:36px;
+  }
+}
+
+
+/* Final photographic ratios from the approved 2024 portrait selection */
+.photo-slot-portrait,
+.photo-slot-contact{
+  aspect-ratio:3/4;
+}
+.photo-slot-wide{
+  aspect-ratio:4/5;
+}
+.office-gallery{
+  width:min(100%,880px);
+}
+.office-gallery .photo-slot{
+  min-height:0;
+}
+@media(max-width:680px){
+  .photo-slot-portrait,
+  .photo-slot-contact{
+    aspect-ratio:3/4;
+  }
+  .photo-slot-wide{
+    aspect-ratio:4/5;
+  }
+  .office-gallery{
+    width:min(100%,440px);
+    margin-inline:auto;
   }
 }
