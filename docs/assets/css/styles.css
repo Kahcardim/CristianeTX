@@ -2421,35 +2421,6 @@ article[id]{
 }
 
 
-/* Final photographic ratios from the approved 2024 portrait selection */
-.photo-slot-portrait,
-.photo-slot-contact{
-  aspect-ratio:3/4;
-}
-.photo-slot-wide{
-  aspect-ratio:4/5;
-}
-.office-gallery{
-  width:min(100%,880px);
-}
-.office-gallery .photo-slot{
-  min-height:0;
-}
-@media(max-width:680px){
-  .photo-slot-portrait,
-  .photo-slot-contact{
-    aspect-ratio:3/4;
-  }
-  .photo-slot-wide{
-    aspect-ratio:4/5;
-  }
-  .office-gallery{
-    width:min(100%,440px);
-    margin-inline:auto;
-  }
-}
-
-
 /* Office page: keep personal portrait separate from future office photography */
 .office-profile .photo-slot-portrait{
   max-width:380px;
