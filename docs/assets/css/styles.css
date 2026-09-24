@@ -2890,7 +2890,7 @@ html.section-snap-page{
 html.section-snap-page.has-page-subnav{
   scroll-padding-top:142px;
 }
-html.section-snap-page main>section{
+html.section-snap-page main>section[id]{
   scroll-snap-align:start;
   scroll-snap-stop:normal;
 }
@@ -3031,5 +3031,80 @@ html.section-snap-page main>.final-cta{
 @media(prefers-reduced-motion:reduce){
   html.section-snap-page{
     scroll-snap-type:none;
+  }
+}
+
+
+/* UX QA fixes: touch targets, contextual floating action and section navigation */
+.brand{
+  min-height:44px;
+}
+
+.content-link{
+  min-height:44px;
+  align-items:center;
+  padding-block:10px;
+}
+
+.preview-card a{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.presentation-dots button,
+.hero-dots button{
+  position:relative;
+  width:44px;
+  height:44px;
+  min-height:44px;
+  padding:0;
+  background:transparent;
+}
+
+.presentation-dots button::after,
+.hero-dots button::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:24px;
+  height:4px;
+  transform:translate(-50%,-50%);
+  background:#cec8bd;
+  transition:width .2s ease,background .2s ease;
+}
+
+.presentation-dots button.is-active::after,
+.hero-dots button.is-active::after{
+  width:40px;
+  background:var(--gold);
+}
+
+.presentation-dots button.is-active,
+.hero-dots button.is-active{
+  width:44px;
+  background:transparent;
+}
+
+.whatsapp-float{
+  transition:opacity .18s ease,transform .18s ease,visibility .18s ease;
+}
+
+.whatsapp-float.is-context-hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(8px);
+}
+
+@media(max-width:680px){
+  .content-link{
+    justify-content:center;
+  }
+
+  .preview-card a{
+    min-height:44px;
   }
 }

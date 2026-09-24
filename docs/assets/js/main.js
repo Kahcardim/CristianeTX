@@ -51,18 +51,33 @@ if(subnavLinks.length){
 
   const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
 
+  const setCurrentSubnav=(href)=>{
+    subnavLinks.forEach((link)=>{
+      if(link.getAttribute("href")===href) link.setAttribute("aria-current","location");
+      else link.removeAttribute("aria-current");
+    });
+  };
+
   subnavLinks.forEach((link)=>{
     link.addEventListener("click",(event)=>{
-      const target=document.querySelector(link.getAttribute("href"));
+      const href=link.getAttribute("href");
+      const target=document.querySelector(href);
       if(!target) return;
       event.preventDefault();
+      setCurrentSubnav(href);
       target.scrollIntoView({
         behavior:reducedMotion.matches?"auto":"smooth",
         block:"start"
       });
-      history.replaceState(null,"",link.getAttribute("href"));
+      history.replaceState(null,"",href);
     });
   });
+
+  setCurrentSubnav(
+    location.hash && subnavLinks.some((link)=>link.getAttribute("href")===location.hash)
+      ? location.hash
+      : subnavLinks[0].getAttribute("href")
+  );
 
   const observer=new IntersectionObserver((entries)=>{
     const visible=entries
@@ -70,10 +85,7 @@ if(subnavLinks.length){
       .sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
     if(!visible) return;
     const id="#"+visible.target.id;
-    subnavLinks.forEach((link)=>{
-      if(link.getAttribute("href")===id) link.setAttribute("aria-current","location");
-      else link.removeAttribute("aria-current");
-    });
+    setCurrentSubnav(id);
   },{
     rootMargin:"-25% 0px -55% 0px",
     threshold:[0,.25,.5,.75]
@@ -232,3 +244,30 @@ if(menuButton && menu){
     setMenuOpen(false);
   });
 }
+
+
+/* Avoid covering primary actions with the floating WhatsApp control on small screens. */
+(() => {
+  const floating=document.querySelector(".whatsapp-float");
+  if(!floating || !("IntersectionObserver" in window)) return;
+
+  const mobile=window.matchMedia("(max-width: 680px)");
+  const zones=[...document.querySelectorAll(".hero-actions, #whatsapp, .final-cta-actions")];
+  const visibleZones=new Set();
+
+  const update=()=>{
+    floating.classList.toggle("is-context-hidden",mobile.matches && visibleZones.size>0);
+  };
+
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach((entry)=>{
+      if(entry.isIntersecting) visibleZones.add(entry.target);
+      else visibleZones.delete(entry.target);
+    });
+    update();
+  },{threshold:.12});
+
+  zones.forEach((zone)=>observer.observe(zone));
+  mobile.addEventListener?.("change",update);
+  update();
+})();
