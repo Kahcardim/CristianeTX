@@ -3505,3 +3505,70 @@ article[id]{
   }
 }
 
+/* Office mobile opening hotfix: align copy closer to header and preserve portrait crop */
+@media(max-width:680px){
+  .office-intro-featured{
+    min-height:0;
+    display:block;
+    align-items:initial;
+    background-size:100% 100%,100% auto,cover;
+    background-position:center,center top,center;
+    background-repeat:no-repeat;
+  }
+
+  .office-profile-featured{
+    padding:clamp(220px,60vw,270px) 14px 18px;
+  }
+
+  .office-profile-featured .office-profile-copy{
+    width:min(100%,500px);
+    padding:18px 16px;
+    background:rgba(8,20,34,.84);
+    backdrop-filter:blur(4px);
+  }
+
+  .office-profile-featured .office-profile-copy .eyebrow{
+    margin-bottom:8px;
+    font-size:8px;
+    line-height:1.35;
+  }
+
+  .office-profile-featured .office-profile-copy h1{
+    max-width:13ch;
+    font-size:clamp(1.9rem,8.4vw,2.35rem);
+    line-height:1.04;
+  }
+
+  .office-profile-featured .office-profile-copy .lead{
+    margin-top:11px;
+    font-size:.91rem;
+    line-height:1.42;
+  }
+
+  .office-profile-featured .office-profile-copy>p:not(.eyebrow):not(.lead){
+    margin-top:8px;
+    font-size:.8rem;
+    line-height:1.44;
+  }
+
+  .office-profile-featured .institution-facts{
+    margin-top:12px;
+    padding-top:11px;
+    gap:8px;
+  }
+}
+
+@media(max-width:380px){
+  .office-profile-featured{
+    padding:clamp(210px,60vw,230px) 10px 14px;
+  }
+
+  .office-profile-featured .office-profile-copy{
+    padding:16px 13px;
+  }
+
+  .office-profile-featured .office-profile-copy h1{
+    font-size:clamp(1.75rem,8.5vw,2rem);
+  }
+}
+
