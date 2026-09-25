@@ -3387,7 +3387,7 @@ article[id]{
   }
 
   .hero-grid{
-    padding:clamp(315px,84vw,455px) 14px 30px;
+    padding:clamp(380px,110vw,455px) 14px 42px;
   }
 
   .hero-copy{
@@ -3441,7 +3441,6 @@ article[id]{
 
 @media(max-width:380px){
   .hero-grid{
-    padding-top:clamp(305px,84vw,320px);
     padding-left:10px;
     padding-right:10px;
   }
