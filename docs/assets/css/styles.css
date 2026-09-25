@@ -3289,3 +3289,89 @@ html.section-snap-page.has-page-subnav{
     box-shadow:none;
   }
 }
+
+/* QA Rodada 01: correções de regressão */
+section[id],
+article[id]{
+  scroll-margin-top:0;
+}
+
+.mobile-scroll-hint{
+  display:none;
+}
+
+@media(max-width:680px){
+  .office-profile-featured .office-profile-copy h1{
+    margin-left:0;
+    margin-right:0;
+  }
+
+  .site-footer .footer-col a{
+    min-height:32px;
+    display:flex;
+    align-items:center;
+  }
+
+  .cookie-notice{
+    position:relative;
+    left:auto;
+    bottom:auto;
+    width:100%;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:10px;
+    padding:10px 14px;
+    border-left:0;
+    border-right:0;
+    border-radius:0;
+    box-shadow:0 8px 20px rgba(8,20,34,.10);
+    transform:none;
+  }
+
+  .cookie-notice.is-visible{
+    transform:none;
+  }
+
+  .cookie-notice strong{
+    font-size:15px;
+  }
+
+  .cookie-notice p{
+    font-size:9.5px;
+    line-height:1.4;
+  }
+
+  .cookie-notice-actions{
+    gap:6px;
+  }
+
+  .cookie-notice a,
+  .cookie-ack{
+    min-height:36px;
+  }
+
+  .cookie-ack{
+    padding-inline:12px;
+  }
+
+  .mobile-scroll-hint{
+    display:flex;
+    justify-content:flex-end;
+    margin:-10px 0 12px;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+  }
+}
+
+@media(max-width:420px){
+  .cookie-notice{
+    grid-template-columns:1fr;
+  }
+
+  .cookie-notice-actions{
+    justify-content:flex-end;
+  }
+}
+
