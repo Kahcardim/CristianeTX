@@ -50,12 +50,7 @@ const subnavLinks=[...document.querySelectorAll(".page-subnav a[href^='#']")];
     .map((link)=>document.querySelector(link.getAttribute("href")))
     .filter(Boolean);
 
-  const genericTargets=[...document.querySelectorAll("main > section")]
-    .filter((section)=>section.getBoundingClientRect().height>120);
-
-  const alignTargets=subnavTargets.length ? subnavTargets : genericTargets;
   let programmaticScroll=false;
-  let settleTimer=null;
 
   const fixedOffset=()=>{
     const header=document.querySelector(".site-header")?.getBoundingClientRect().height||0;
@@ -113,33 +108,22 @@ const subnavLinks=[...document.querySelectorAll(".page-subnav a[href^='#']")];
         ? location.hash
         : subnavLinks[0].getAttribute("href");
     setCurrentSubnav(initialHref);
+
+    if(location.hash && subnavLinks.some((link)=>link.getAttribute("href")===location.hash)){
+      const initialTarget=document.querySelector(location.hash);
+      if(initialTarget){
+        requestAnimationFrame(()=>{
+          const top=window.scrollY+initialTarget.getBoundingClientRect().top-fixedOffset();
+          window.scrollTo({top:Math.max(0,top),behavior:"auto"});
+          setCurrentSubnav(location.hash);
+        });
+      }
+    }
   }
 
   window.addEventListener("scroll",()=>{
     if(programmaticScroll) return;
     syncCurrentSubnav();
-    if(reducedMotion.matches || !alignTargets.length) return;
-
-    window.clearTimeout(settleTimer);
-    settleTimer=window.setTimeout(()=>{
-      const offset=fixedOffset();
-      const candidate=alignTargets
-        .map((target)=>({target,delta:target.getBoundingClientRect().top-offset}))
-        .filter(({delta})=>Math.abs(delta)<=32)
-        .sort((a,b)=>Math.abs(a.delta)-Math.abs(b.delta))[0];
-
-      if(!candidate || Math.abs(candidate.delta)<8) return;
-
-      programmaticScroll=true;
-      window.scrollBy({
-        top:candidate.delta,
-        behavior:"smooth"
-      });
-      window.setTimeout(()=>{
-        programmaticScroll=false;
-        syncCurrentSubnav();
-      },360);
-    },240);
   },{passive:true});
 
   window.addEventListener("resize",syncCurrentSubnav,{passive:true});
@@ -248,7 +232,9 @@ if(presentationCarousel){
   };
 
   notice.querySelector(".cookie-ack")?.addEventListener("click",acknowledge);
-  document.body.append(notice);
+  const header=document.querySelector(".site-header");
+  if(header) header.insertAdjacentElement("afterend",notice);
+  else document.body.prepend(notice);
 
   requestAnimationFrame(()=>{
     requestAnimationFrame(()=>notice.classList.add("is-visible"));
@@ -291,6 +277,13 @@ if(menuButton && menu){
 (() => {
   const floating=document.querySelector(".whatsapp-float");
   if(!floating) return;
+
+  const externalWhatsApp=/^https:\/\/(wa\.me|api\.whatsapp\.com)\//i.test(floating.href);
+  if(!externalWhatsApp){
+    floating.remove();
+    document.querySelectorAll(".site-footer a[href*='#whatsapp']").forEach((link)=>link.remove());
+    return;
+  }
 
   const mobile=window.matchMedia("(max-width: 680px)");
   const zones=[...document.querySelectorAll(".hero-actions, .contact-channel-grid, .final-cta-actions")];
