@@ -3093,7 +3093,7 @@ html.section-snap-page.has-page-subnav{
   .office-profile-featured{
     display:block;
     width:100%;
-    padding:clamp(220px,60vw,270px) 14px 18px;
+    padding:clamp(200px,55vw,245px) 14px 18px;
   }
 
   .office-profile-featured .office-profile-copy{
@@ -3160,7 +3160,7 @@ html.section-snap-page.has-page-subnav{
 
 @media(max-width:380px){
   .office-profile-featured{
-    padding:clamp(210px,60vw,230px) 10px 14px;
+    padding:clamp(190px,55vw,210px) 10px 14px;
   }
 
   .office-profile-featured .office-profile-copy{
