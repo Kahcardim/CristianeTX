@@ -3467,3 +3467,41 @@ article[id]{
   }
 }
 
+/* Mobile footer compacting after QA Rodada 01 retest */
+@media(max-width:680px){
+  .site-footer{
+    padding:20px 0 8px;
+  }
+
+  .footer-grid{
+    gap:12px 12px;
+  }
+
+  .footer-col{
+    gap:2px;
+  }
+
+  .footer-col h3{
+    margin-bottom:3px;
+  }
+
+  .site-footer .footer-col a{
+    min-height:28px;
+  }
+
+  .footer-col:last-child{
+    gap:3px 10px;
+  }
+
+  .footer-legal{
+    margin-top:14px;
+    padding-top:8px;
+    gap:4px 10px;
+  }
+
+  .footer-bottom{
+    margin-top:10px;
+    padding-top:8px;
+  }
+}
+
