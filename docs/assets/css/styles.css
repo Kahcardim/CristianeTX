@@ -3407,7 +3407,7 @@ article[id]{
 
   .portrait-frame{
     width:100%;
-    aspect-ratio:16/9;
+    aspect-ratio:4/3;
     border:0;
     background:#10151b;
   }
@@ -3421,7 +3421,7 @@ article[id]{
 
   .portrait-frame img{
     object-fit:cover;
-    object-position:center 30%;
+    object-position:center 18%;
   }
 
   .signature-card{
