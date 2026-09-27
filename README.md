@@ -36,6 +36,35 @@ GET http://localhost:3000/health
 
 ## Qualidade
 
-O deploy falha se detectar páginas obrigatórias ausentes, links ou âncoras quebrados, imagens sem dimensões/alt, assets inexistentes ou imagens órfãs.
+O projeto usa Quality Gates antes e depois do deploy.
+
+Antes da publicação:
+
+- validação estrutural de páginas, links, âncoras, imagens e assets;
+- contratos de conteúdo e identidade;
+- regressão Playwright;
+- smoke cross-browser em Chromium, Firefox e WebKit;
+- matriz responsiva;
+- testes de menu, cookies, âncoras, scroll e carrossel;
+- checks de acessibilidade adaptativa e alvos de toque;
+- auditoria do bundle minificado.
+
+A build é criada uma única vez. O artefato que passou pelos gates é exatamente o mesmo publicado no GitHub Pages.
+
+Depois do deploy, o pipeline executa smoke na produção, incluindo o 404 customizado.
+
+Documentação interna:
+
+- `qa/QA-STRATEGY.md`
+- `qa/TEST-MATRIX.md`
+- `qa/INCIDENT-TO-REGRESSION.md`
+
+Comandos locais:
+
+```bash
+npm install
+npx playwright install chromium firefox webkit
+npm run qa
+```
 
 O código-fonte permanece legível no repositório. CSS e JavaScript são minificados apenas no bundle publicado.

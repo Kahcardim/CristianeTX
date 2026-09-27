@@ -3569,4 +3569,21 @@ article[id]{
   }
 }
 
+/* CristianeTX mobile interaction guard */
+@media(max-width:680px), (pointer:coarse){
+  .menu-toggle,
+  .hero-actions .button,
+  .presentation-arrow,
+  .cookie-notice a,
+  .cookie-ack{
+    min-width:44px;
+    min-height:44px;
+  }
+
+  .menu-toggle,
+  .presentation-arrow{
+    width:44px;
+    height:44px;
+  }
+}
 
