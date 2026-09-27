@@ -2,7 +2,7 @@ name: CristianeTX Quality & Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "qa/cristx-quality-pipeline"]
     paths:
       - "docs/**"
       - "scripts/**"
