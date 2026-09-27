@@ -14,7 +14,6 @@ function walk(dir){
 walk(root);
 
 const failures=[];
-const warnings=[];
 const forbiddenIdentity=[
   /\bUPPTB\b/i,
   /\bAlice\b/i,
@@ -60,8 +59,26 @@ for(const file of htmlFiles){
     if(digits.length<10) failures.push(`${rel}: URL de WhatsApp inválida`);
   }
 
-  if(/href="[^"]*#whatsapp"/i.test(html) && !externalWhatsApp.length){
-    warnings.push(`${rel}: referência interna a #whatsapp sem canal externo oficial; mantida como dívida conhecida`);
+  if(/href="[^"]*#whatsapp"/i.test(html)){
+    failures.push(`${rel}: referência interna a #whatsapp sem canal oficial configurado`);
+  }
+}
+
+const fixturePath=path.resolve("qa/fixtures/institutional.test.json");
+if(!fs.existsSync(fixturePath)){
+  failures.push("fixture institucional de QA ausente");
+}else{
+  const fixture=JSON.parse(fs.readFileSync(fixturePath,"utf8"));
+  if(fixture.fictitious!==true) failures.push("fixture institucional deve declarar fictitious=true");
+  if(!/^55\d{11}$/.test(fixture.whatsappDigits||"")) failures.push("fixture: WhatsApp fictício fora do formato brasileiro esperado");
+  if(!/^\(\d{2}\) \d{5}-\d{4}$/.test(fixture.whatsappDisplay||"")) failures.push("fixture: exibição de WhatsApp inválida");
+  if(!/^OAB\/SP \d{6}$/.test(fixture.oab||"")) failures.push("fixture: OAB fictícia inválida");
+  if(!/^@[A-Za-z0-9._]{1,30}$/.test(fixture.instagram||"")) failures.push("fixture: Instagram fictício inválido");
+
+  const publicCorpus=htmlFiles.map(file=>fs.readFileSync(file,"utf8")).join("\n");
+  for(const key of ["whatsappDigits","whatsappDisplay","oab","instagram"]){
+    const value=fixture[key];
+    if(value && publicCorpus.includes(value)) failures.push(`dados fictícios de QA vazaram para produção: ${key}`);
   }
 }
 
@@ -84,12 +101,10 @@ for(const feature of ["prefers-reduced-motion","prefers-contrast","forced-colors
 }
 if(!sourceFiles[1].content.includes("matchMedia")) failures.push("main.js: integração matchMedia ausente");
 
-warnings.forEach(warning=>console.warn("WARN:",warning));
-
 if(failures.length){
   console.error("\nFalhas de contrato de conteúdo/identidade:\n");
   failures.forEach(item=>console.error(" - "+item));
   process.exit(1);
 }
 
-console.log(`Contratos de conteúdo OK: ${htmlFiles.length} páginas; ${warnings.length} aviso(s) não bloqueante(s).`);
+console.log(`Contratos de conteúdo OK: ${htmlFiles.length} páginas; fixture institucional fictícia validada; 0 warnings.`);
