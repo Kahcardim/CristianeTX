@@ -26,7 +26,7 @@
 | UX-03 | Touch | controles primários >= 44×44 | P1 |
 | A11Y-01 | Semântica | controles visíveis com nome acessível | P1 |
 | A11Y-02 | Preferências | reduced-motion e forced-colors | P1 |
-| WA-01 | Contato | nenhum WhatsApp fictício | P0 |
+| WA-01 | Contato | nenhum WhatsApp fictício em produção | P0 |\n| DAT-02 | Fixture | WhatsApp/OAB/Instagram fictícios válidos e confinados ao QA | P1 |
 | BLD-01 | Bundle | CSS/JS válidos e limites de tamanho | P1 |
 | BLD-02 | Bundle | imagens e tamanho total dentro do orçamento | P2 |
 | PRD-01 | Produção | rotas críticas publicadas | P0 |
@@ -65,4 +65,4 @@ Os valores representam classes de viewport. O layout não depende do nome/modelo
 
 ## Evidência
 
-Falha automatizada deve preservar trace, screenshot e relatório Playwright quando disponíveis. Falha visual manual deve registrar viewport/aparelho, rota, screenshot e resultado esperado.
+Falha automatizada deve preservar trace, screenshot e relatório Playwright quando disponíveis. Falha visual manual deve registrar viewport/aparelho, rota, screenshot e resultado esperado.\n## Dados institucionais de QA\n\nEnquanto os dados oficiais não forem fornecidos, `qa/fixtures/institutional.test.json` usa valores fictícios exclusivamente para testes. O pipeline falha se qualquer um deles aparecer dentro de `docs/`.\n
