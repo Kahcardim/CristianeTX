@@ -1,0 +1,16 @@
+{
+  "name": "cristianetx-quality",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Quality gates do site institucional Cristiane Teixeira Advocacia Previdenciária",
+  "scripts": {
+    "qa:structure": "node scripts/validate-site.mjs",
+    "qa:content": "node scripts/validate-content.mjs",
+    "qa:e2e": "playwright test",
+    "qa:bundle": "node scripts/validate-bundle.mjs dist",
+    "qa": "npm run qa:structure && npm run qa:content && npm run qa:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.0"
+  }
+}
