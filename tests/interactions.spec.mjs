@@ -51,22 +51,24 @@ test("subnav do Escritório navega sem cortar título",async({page})=>{
     await expect(link).toHaveAttribute("aria-current","location");
     const safe=await page.evaluate(selector=>{
       const target=document.querySelector(selector);
+      const heading=target?.querySelector("h1,h2,h3") || target;
       const header=document.querySelector(".site-header");
       const subnav=document.querySelector(".page-subnav");
-      if(!target||!header||!subnav) return false;
-      const top=target.getBoundingClientRect().top;
+      if(!heading||!header||!subnav) return false;
+      const top=heading.getBoundingClientRect().top;
       const min=header.getBoundingClientRect().height+subnav.getBoundingClientRect().height-2;
       return top>=min;
     },href);
-    expect(safe,`âncora ${href} coberta`).toBeTruthy();
+    expect(safe,`título da âncora ${href} coberto`).toBeTruthy();
   }
 });
 
 test("scroll manual não sofre puxão automático",async({page})=>{
   await page.setViewportSize({width:393,height:852});
   await page.addInitScript(()=>{localStorage.setItem("ct-cookie-notice-v1","acknowledged")});
+  await page.emulateMedia({reducedMotion:"reduce"});
   await page.goto("/escritorio/");
-  await page.evaluate(()=>window.scrollTo(0,500));
+  await page.evaluate(()=>window.scrollTo({top:500,behavior:"auto"}));
   await page.mouse.wheel(0,180);
   await page.waitForTimeout(120);
   const settled=await page.evaluate(()=>window.scrollY);
