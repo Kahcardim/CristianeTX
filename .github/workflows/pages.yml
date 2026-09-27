@@ -2,7 +2,7 @@ name: CristianeTX Quality & Pages
 
 on:
   push:
-    branches: ["main", "qa/cristx-quality-pipeline"]
+    branches: ["main"]
     paths:
       - "docs/**"
       - "scripts/**"
@@ -95,7 +95,7 @@ jobs:
 
   deploy:
     name: Deploy GitHub Pages
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     needs: quality-gate
     runs-on: ubuntu-latest
     permissions:
@@ -129,7 +129,7 @@ jobs:
 
   production-smoke:
     name: Production Smoke
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     needs: deploy
     runs-on: ubuntu-latest
 
