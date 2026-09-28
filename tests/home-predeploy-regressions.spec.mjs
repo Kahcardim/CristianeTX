@@ -74,6 +74,57 @@ test("BUG-MOBILE-01 paisagem usa a largura sem empilhar um hero excessivo",async
   expect(metrics.photoRight).toBeGreaterThan(metrics.viewportWidth*.9);
 });
 
+for(const width of [320,393,430]){
+  test(`BUG-MOBILE-01 retrato sem faixas laterais ou inferiores em ${width}px`,async({page})=>{
+    await page.setViewportSize({width,height:852});
+    await page.goto("/",{waitUntil:"networkidle"});
+    const metrics=await page.evaluate(()=>{
+      const rect=(selector)=>document.querySelector(selector).getBoundingClientRect();
+      const hero=rect(".hero"),grid=rect(".hero-grid"),copy=rect(".hero-copy"),photo=rect(".portrait-frame");
+      return {viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth,
+        hero:[hero.left,hero.right,hero.bottom],gridBottom:grid.bottom,
+        copy:[copy.left,copy.right,copy.top,copy.bottom],photoBottom:photo.bottom};
+    });
+    expect(metrics.scrollWidth).toBe(metrics.viewport);
+    expect(metrics.hero[0]).toBe(0);
+    expect(metrics.hero[1]).toBe(metrics.viewport);
+    expect(metrics.copy[0]).toBe(0);
+    expect(metrics.copy[1]).toBe(metrics.viewport);
+    expect(Math.abs(metrics.copy[2]-metrics.photoBottom)).toBeLessThanOrEqual(1);
+    expect(Math.abs(metrics.copy[3]-metrics.gridBottom)).toBeLessThanOrEqual(1);
+    expect(Math.abs(metrics.copy[3]-metrics.hero[2])).toBeLessThanOrEqual(1);
+  });
+}
+
+test("BUG-MOBILE-01 menu e abertura ocupam a viewport em todas as páginas",async({page})=>{
+  for(const width of [320,393]){
+    await page.setViewportSize({width,height:852});
+    for(const route of routes.filter(route=>route!=="/404.html")){
+      await page.goto(route,{waitUntil:"networkidle"});
+      await page.locator("[data-menu-toggle]").click();
+      const metrics=await page.evaluate(()=>{
+        const header=document.querySelector(".site-header").getBoundingClientRect();
+        const menu=document.querySelector("[data-menu]").getBoundingClientRect();
+        const opening=document.querySelector("main > section").getBoundingClientRect();
+        const office=document.querySelector(".office-profile-featured .office-profile-copy")?.getBoundingClientRect();
+        const last=document.querySelector("[data-menu] a:last-child").getBoundingClientRect();
+        return {viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth,
+          header:[header.left,header.right],menu:[menu.left,menu.right],opening:[opening.left,opening.right],
+          office:office?[office.left,office.right,office.bottom,opening.bottom]:null,
+          lastVisible:last.left>=0&&last.right<=innerWidth&&last.bottom<=innerHeight};
+      });
+      expect(metrics.scrollWidth,route).toBe(width);
+      expect(metrics.header,route).toEqual([0,width]);
+      expect(metrics.menu,route).toEqual([0,width]);
+      expect(metrics.opening,route).toEqual([0,width]);
+      expect(metrics.lastVisible,route).toBe(true);
+      if(metrics.office){
+        expect(metrics.office,route).toEqual([0,width,metrics.office[2],metrics.office[2]]);
+      }
+    }
+  }
+});
+
 test("BUG-MOBILE-01 contrato de safe area está presente em todas as páginas",async({page})=>{
   for(const route of routes){
     await page.goto(route,{waitUntil:"networkidle"});
