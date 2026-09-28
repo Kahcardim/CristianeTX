@@ -14,7 +14,8 @@ test("menu mobile abre, fecha com Escape e toque externo",async({page})=>{
   await expect(button).toHaveAttribute("aria-expanded","false");
 
   await button.click();
-  await page.locator("main").click({position:{x:5,y:5}});
+  const menuBottom=await page.locator("[data-menu]").evaluate(element=>element.getBoundingClientRect().bottom);
+  await page.mouse.click(5,menuBottom+20);
   await expect(button).toHaveAttribute("aria-expanded","false");
 });
 
