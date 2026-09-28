@@ -47,14 +47,32 @@ for(const viewport of [
 
     const menu=await page.locator("[data-menu]").evaluate(element=>{
       const rect=element.getBoundingClientRect();
-      return {left:rect.left,right:rect.right,width:rect.width,viewport:window.innerWidth};
+      const firstLink=element.querySelector("a").getBoundingClientRect();
+      return {
+        left:rect.left,right:rect.right,width:rect.width,viewport:window.innerWidth,
+        firstLinkVisible:Boolean(document.elementFromPoint(firstLink.left+firstLink.width/2,firstLink.top+firstLink.height/2)?.closest("[data-menu]"))
+      };
     });
 
-    expect(menu.left).toBeGreaterThanOrEqual(0);
-    expect(menu.right).toBeLessThanOrEqual(menu.viewport+1);
-    expect(menu.width).toBeGreaterThan(0);
+    expect(Math.abs(menu.left)).toBeLessThanOrEqual(1);
+    expect(Math.abs(menu.right-menu.viewport)).toBeLessThanOrEqual(1);
+    expect(menu.firstLinkVisible).toBe(true);
   });
 }
+
+test("BUG-MOBILE-01 paisagem usa a largura sem empilhar um hero excessivo",async({page})=>{
+  await page.setViewportSize({width:852,height:393});
+  await page.goto("/",{waitUntil:"networkidle"});
+  const metrics=await page.evaluate(()=>{
+    const hero=document.querySelector(".hero").getBoundingClientRect();
+    const copy=document.querySelector(".hero-copy").getBoundingClientRect();
+    const photo=document.querySelector(".portrait-frame").getBoundingClientRect();
+    return {heroHeight:hero.height,viewportHeight:innerHeight,copyRight:copy.right,photoLeft:photo.left,photoRight:photo.right,viewportWidth:innerWidth};
+  });
+  expect(metrics.heroHeight).toBeLessThan(metrics.viewportHeight*1.4);
+  expect(metrics.copyRight).toBeLessThan(metrics.photoLeft);
+  expect(metrics.photoRight).toBeGreaterThan(metrics.viewportWidth*.9);
+});
 
 test("BUG-MOBILE-01 contrato de safe area está presente em todas as páginas",async({page})=>{
   for(const route of routes){
