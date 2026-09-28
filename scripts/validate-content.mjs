@@ -33,6 +33,7 @@ for(const file of htmlFiles){
 
   if(!/<html\s+lang="pt-BR"/i.test(html)) failures.push(`${rel}: lang pt-BR ausente`);
   if(!/<meta\s+name="viewport"[^>]*width=device-width/i.test(html)) failures.push(`${rel}: viewport responsivo ausente`);
+  if(!/<meta\s+name="viewport"[^>]*viewport-fit=cover/i.test(html)) failures.push(`${rel}: viewport-fit=cover ausente`);
 
   const h1Count=(html.match(/<h1\b/gi)||[]).length;
   if(h1Count!==1) failures.push(`${rel}: esperado 1 H1, encontrado ${h1Count}`);
@@ -98,6 +99,9 @@ if(!sourceFiles[0].content.includes("@media(pointer:coarse)") && !sourceFiles[0]
 }
 for(const feature of ["prefers-reduced-motion","prefers-contrast","forced-colors"]){
   if(!sourceFiles[0].content.includes(feature)) failures.push(`styles.css: suporte a ${feature} ausente`);
+}
+for(const safeArea of ["safe-area-inset-top","safe-area-inset-left","safe-area-inset-right"]){
+  if(!sourceFiles[0].content.includes(safeArea)) failures.push(`styles.css: suporte a ${safeArea} ausente`);
 }
 if(!sourceFiles[1].content.includes("matchMedia")) failures.push("main.js: integração matchMedia ausente");
 

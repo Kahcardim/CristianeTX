@@ -18,6 +18,12 @@
 | RSP-02 | Home | hero 4:3 em mobile | P1 |
 | RSP-03 | Home | painel abaixo da foto em fluxo normal | P1 |
 | RSP-04 | Escritório | abertura dentro da viewport | P1 |
+| MOBILE-01 | Header global | largura útil, safe areas, orientação e zero overflow em 320–430 px | P0 |
+| HOME-CT-01 | Home | escala contida do hero e apresentação institucional no desktop | P1 |
+| HOME-CT-02 | Home | três imagens editoriais próprias carregam com dimensões válidas | P1 |
+| HOME-CT-03 | Home | copy previdenciária específica e original | P1 |
+| HOME-CT-04 | Home | seção de orientação centralizada e limitada a 1040 px | P1 |
+| HOME-CT-05 | Home | CTA final e rodapé preservam eixo central | P1 |
 | NAV-01 | Menu | abrir/fechar/Escape/toque externo | P1 |
 | NAV-02 | Âncoras | subnav sem título coberto | P1 |
 | NAV-03 | Scroll | zero puxão após scroll manual | P1 |
@@ -65,4 +71,8 @@ Os valores representam classes de viewport. O layout não depende do nome/modelo
 
 ## Evidência
 
-Falha automatizada deve preservar trace, screenshot e relatório Playwright quando disponíveis. Falha visual manual deve registrar viewport/aparelho, rota, screenshot e resultado esperado.\n## Dados institucionais de QA\n\nEnquanto os dados oficiais não forem fornecidos, `qa/fixtures/institutional.test.json` usa valores fictícios exclusivamente para testes. O pipeline falha se qualquer um deles aparecer dentro de `docs/`.\n
+Falha automatizada deve preservar trace, screenshot e relatório Playwright quando disponíveis. Falha visual manual deve registrar viewport/aparelho, rota, screenshot e resultado esperado.
+
+## Dados institucionais de QA
+
+Enquanto os dados oficiais não forem fornecidos, `qa/fixtures/institutional.test.json` usa valores fictícios exclusivamente para testes. O pipeline falha se qualquer um deles aparecer dentro de `docs/`.
