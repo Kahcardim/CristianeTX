@@ -4004,3 +4004,25 @@ article[id]{
     grid-column:auto;
   }
 }
+
+
+/* QA remediation follow-up: keep media intrinsic ratio from inflating the slide */
+.presentation-media{
+  min-width:0;
+  height:100%;
+}
+
+.presentation-media img{
+  position:absolute;
+  inset:0;
+  min-height:0;
+}
+
+/* Header remains viewport-wide; opened navigation stays inset so outside-tap remains available */
+@media(max-width:1179px){
+  .site-header .main-nav{
+    left:max(14px,env(safe-area-inset-left));
+    right:max(14px,env(safe-area-inset-right));
+    width:auto;
+  }
+}
