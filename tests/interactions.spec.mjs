@@ -32,6 +32,25 @@ test("cookie persiste consentimento local",async({page})=>{
   await expect(page.locator(".cookie-notice")).toHaveCount(0);
 });
 
+test("aviso de privacidade não cobre conteúdo em desktop nem mobile",async({page})=>{
+  for(const viewport of [{width:1365,height:900},{width:390,height:844}]){
+    await page.setViewportSize(viewport);
+    await page.evaluate(()=>localStorage.removeItem("ct-cookie-notice-v1"));
+    await page.goto("/");
+
+    const metrics=await page.evaluate(()=>{
+      const notice=document.querySelector(".cookie-notice");
+      const main=document.querySelector("main");
+      const nr=notice.getBoundingClientRect();
+      const mr=main.getBoundingClientRect();
+      return {position:getComputedStyle(notice).position,noticeBottom:nr.bottom,mainTop:mr.top};
+    });
+
+    expect(metrics.position).toBe("relative");
+    expect(metrics.mainTop).toBeGreaterThanOrEqual(metrics.noticeBottom-1);
+  }
+});
+
 test("subnav do Escritório navega sem cortar título",async({page})=>{
   await page.setViewportSize({width:393,height:852});
   await page.addInitScript(()=>{localStorage.setItem("ct-cookie-notice-v1","acknowledged")});

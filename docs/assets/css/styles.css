@@ -3178,9 +3178,8 @@ html.section-snap-page.has-page-subnav{
 
 /* Professional first-visit cookie notice */
 .cookie-notice{
-  position:fixed;
-  left:50%;
-  bottom:max(18px,env(safe-area-inset-bottom));
+  position:relative;
+  margin:0 auto;
   z-index:90;
   width:min(720px,calc(100vw - 32px));
   display:grid;
@@ -3196,14 +3195,14 @@ html.section-snap-page.has-page-subnav{
   color:var(--ink);
   opacity:0;
   visibility:hidden;
-  transform:translate(-50%,12px);
+  transform:translateY(8px);
   transition:opacity .22s ease,transform .22s ease,visibility .22s ease;
 }
 
 .cookie-notice.is-visible{
   opacity:1;
   visibility:visible;
-  transform:translate(-50%,0);
+  transform:translateY(0);
 }
 
 .cookie-notice-copy{
@@ -3262,7 +3261,6 @@ html.section-snap-page.has-page-subnav{
 
 @media(max-width:680px){
   .cookie-notice{
-    bottom:max(10px,env(safe-area-inset-bottom));
     width:calc(100vw - 20px);
     grid-template-columns:1fr;
     gap:12px;
@@ -3586,4 +3584,3 @@ article[id]{
     height:44px;
   }
 }
-
