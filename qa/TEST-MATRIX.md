@@ -18,6 +18,10 @@
 | RSP-02 | Home | hero 4:3 em mobile | P1 |
 | RSP-03 | Home | painel abaixo da foto em fluxo normal | P1 |
 | RSP-04 | Escritório | abertura dentro da viewport | P1 |
+| RSP-05 | Header global | largura integral da viewport em Realme C75x, Galaxy A55 e iPhone 16 (classes CSS) | P0 |
+| UX-04 | Home | apresentação institucional compacta, centralizada e com imagens institucionais reais | P1 |
+| CNT-04 | Home | copy previdenciária própria com CNIS, incapacidade e descontos indevidos | P1 |
+| UX-05 | Home | CTA final e rodapé com fechamento centralizado e superfície visual coerente | P1 |
 | NAV-01 | Menu | abrir/fechar/Escape/toque externo | P1 |
 | NAV-02 | Âncoras | subnav sem título coberto | P1 |
 | NAV-03 | Scroll | zero puxão após scroll manual | P1 |
@@ -38,6 +42,7 @@
 Matriz geral:
 
 - 360×800;
+- 384×832;
 - 393×852;
 - 412×915;
 - 768×1024;
