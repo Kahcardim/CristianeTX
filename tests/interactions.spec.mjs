@@ -35,8 +35,9 @@ test("cookie persiste consentimento local",async({page})=>{
 test("aviso de privacidade não cobre conteúdo em desktop nem mobile",async({page})=>{
   for(const viewport of [{width:1365,height:900},{width:390,height:844}]){
     await page.setViewportSize(viewport);
-    await page.evaluate(()=>localStorage.removeItem("ct-cookie-notice-v1"));
     await page.goto("/");
+    await page.evaluate(()=>localStorage.removeItem("ct-cookie-notice-v1"));
+    await page.reload();
 
     const metrics=await page.evaluate(()=>{
       const notice=document.querySelector(".cookie-notice");
