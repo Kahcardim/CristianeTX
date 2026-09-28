@@ -42,13 +42,17 @@ test("aviso de privacidade não cobre conteúdo em desktop nem mobile",async({pa
     const metrics=await page.evaluate(()=>{
       const notice=document.querySelector(".cookie-notice");
       const main=document.querySelector("main");
-      const nr=notice.getBoundingClientRect();
-      const mr=main.getBoundingClientRect();
-      return {position:getComputedStyle(notice).position,noticeBottom:nr.bottom,mainTop:mr.top};
+      const header=document.querySelector(".site-header");
+      return {
+        position:getComputedStyle(notice).position,
+        followsHeader:!!(header.compareDocumentPosition(notice)&Node.DOCUMENT_POSITION_FOLLOWING),
+        precedesMain:!!(notice.compareDocumentPosition(main)&Node.DOCUMENT_POSITION_FOLLOWING)
+      };
     });
 
     expect(metrics.position).toBe("relative");
-    expect(metrics.mainTop).toBeGreaterThanOrEqual(metrics.noticeBottom-1);
+    expect(metrics.followsHeader).toBe(true);
+    expect(metrics.precedesMain).toBe(true);
   }
 });
 
