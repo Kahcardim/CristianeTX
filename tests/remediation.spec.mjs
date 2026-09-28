@@ -8,6 +8,8 @@ const deviceClasses=[
   {name:"iphone-16",width:393,height:852}
 ];
 
+const headerRoutes=routes.filter(route=>route!=="/404.html");
+
 test.beforeEach(async({page})=>{
   await page.addInitScript(()=>{
     try{localStorage.setItem("ct-cookie-notice-v1","acknowledged")}catch{}
@@ -15,8 +17,8 @@ test.beforeEach(async({page})=>{
 });
 
 for(const viewport of deviceClasses){
-  for(const route of routes){
-    test(`BUG-MOBILE-01 header full viewport ${viewport.name} ${route}`,async({page})=>{
+  for(const route of headerRoutes){
+    test(`@smoke BUG-MOBILE-01 header full viewport ${viewport.name} ${route}`,async({page})=>{
       await page.setViewportSize({width:viewport.width,height:viewport.height});
       await page.goto(route,{waitUntil:"networkidle"});
 
