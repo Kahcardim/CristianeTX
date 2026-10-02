@@ -345,7 +345,7 @@ if(menuButton && menu){
   }
 
   const mobile=window.matchMedia("(max-width: 680px)");
-  const zones=[...document.querySelectorAll(".hero-actions, .contact-channel-grid, .final-cta-actions")];
+  const zones=[...document.querySelectorAll(".hero-actions, .contact-channel-grid, .final-cta-actions, .site-footer")];
   let scheduled=false;
 
   const overlaps=(a,b)=>(

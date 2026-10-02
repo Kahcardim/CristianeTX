@@ -4025,3 +4025,57 @@ body{
 @media(prefers-reduced-motion:reduce){
   .whatsapp-float{transition:none}
 }
+
+/* Keep the mobile opening and closing sections within the usable viewport. */
+@media(max-width:680px) and (orientation:portrait){
+  .hero-portrait .portrait-frame{
+    height:min(36svh,255px);
+    min-height:205px;
+    aspect-ratio:auto;
+  }
+
+  .hero-portrait img{object-position:center top}
+  .hero-copy{padding:14px 16px 18px}
+  .institution-title>span{max-width:18ch;font-size:clamp(1.75rem,7.8vw,2.2rem)}
+
+  .hero-actions{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:9px;
+    margin-top:14px;
+  }
+
+  .hero-actions .button,
+  .final-cta-actions .button{
+    width:auto;
+    max-width:100%;
+    min-height:44px;
+    padding-inline:22px;
+    border-radius:999px;
+    text-align:center;
+  }
+
+  .final-cta{padding:26px 0 22px}
+  .final-cta-actions{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:9px;
+    width:100%;
+  }
+
+  .site-footer{padding:20px 0 12px}
+  .footer-grid{
+    width:min(calc(100% - 32px),1040px);
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px 16px;
+    text-align:center;
+  }
+
+  .footer-col{justify-items:center;text-align:center}
+  .footer-col a{width:auto;margin-inline:0}
+  .footer-col:last-child{justify-items:center}
+  .footer-legal{justify-content:center}
+  .footer-bottom{justify-content:center;padding-inline:12px}
+}

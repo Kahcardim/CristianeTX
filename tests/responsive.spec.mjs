@@ -56,13 +56,12 @@ for(const viewport of heroViewports){
 
     if(viewport.width<=680){
       expect(metrics.mobileSource).toContain("hero-mobile.webp");
-      const ratio=metrics.frame.width/metrics.frame.height;
-      expect(ratio).toBeGreaterThan(1.32);
-      expect(ratio).toBeLessThan(1.35);
+      expect(metrics.frame.height).toBeGreaterThanOrEqual(200);
+      expect(metrics.frame.height).toBeLessThanOrEqual(255);
       expect(Math.abs(metrics.copy.top-metrics.portrait.bottom)).toBeLessThanOrEqual(2);
       expect(metrics.copy.width).toBeLessThanOrEqual(viewport.width);
       expect(metrics.objectFit).toBe("cover");
-      expect(metrics.objectPosition).toContain("18%");
+      expect(metrics.objectPosition).toContain("0%");
     }
   });
 }
