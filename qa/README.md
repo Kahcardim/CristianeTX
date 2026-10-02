@@ -1,6 +1,6 @@
 # Qualidade — CristianeTX
 
-Esta pasta concentra a estratégia, matriz e critérios de regressão do site institucional da Cristiane Teixeira Advocacia Previdenciária.
+Esta pasta concentra a estratégia, matriz e critérios de regressão do site institucional da Cristiane Teixeira de Souza, Advogada Previdenciária.
 
 A identidade pública do projeto permanece exclusivamente CristianeTX. Os artefatos desta pasta são internos ao repositório e não fazem parte do bundle publicado no GitHub Pages.
 

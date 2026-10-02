@@ -4079,3 +4079,36 @@ body{
   .footer-legal{justify-content:center}
   .footer-bottom{justify-content:center;padding-inline:12px}
 }
+
+/* The lawyer's full name stays on one centered line at every hero width. */
+.hero .institution-title>span{
+  max-width:none;
+  white-space:nowrap;
+  font-size:clamp(1.35rem,3vw,3rem);
+  text-align:center;
+}
+
+@media(max-width:680px) and (orientation:portrait){
+  .hero-copy{
+    min-height:min(330px,calc(100svh - 73px - min(36svh,255px)));
+  }
+
+  .hero .institution-title>span{
+    font-size:clamp(1.3rem,6.5vw,1.8rem);
+  }
+}
+
+@media(min-width:681px) and (max-width:900px){
+  .hero .institution-title>span{font-size:clamp(1.05rem,2.25vw,1.3rem)}
+}
+
+@media(max-width:900px) and (orientation:landscape) and (max-height:600px){
+  .hero .institution-title>span{font-size:clamp(1.2rem,2.75vw,1.6rem)}
+}
+
+@media(max-width:340px) and (max-height:600px){
+  .hero-copy{padding:8px 16px 6px}
+  .hero-statement{margin-top:8px}
+  .hero-text{margin-top:4px}
+  .hero-actions{margin-top:10px;gap:6px}
+}

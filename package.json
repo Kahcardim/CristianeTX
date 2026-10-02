@@ -2,7 +2,7 @@
   "name": "cristianetx-quality",
   "private": true,
   "version": "1.0.0",
-  "description": "Quality gates do site institucional Cristiane Teixeira Advocacia Previdenciária",
+  "description": "Quality gates do site institucional Cristiane Teixeira de Souza, Advogada Previdenciária",
   "scripts": {
     "qa:structure": "node scripts/validate-site.mjs",
     "qa:content": "node scripts/validate-content.mjs",

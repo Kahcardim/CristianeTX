@@ -1,4 +1,4 @@
-# Cristiane Teixeira | Advocacia Previdenciária
+# Cristiane Teixeira | Advogada Previdenciária
 
 Site institucional da Dra. Cristiane Teixeira de Souza, OAB/SP.
 
