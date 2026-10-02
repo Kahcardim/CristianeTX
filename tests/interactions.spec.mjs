@@ -116,9 +116,27 @@ test("carrossel institucional responde aos controles",async({page})=>{
   expect(after).not.toBe(before);
 });
 
-test("WhatsApp não é anunciado como canal ativo sem URL oficial",async({page})=>{
+test("WhatsApp oficial aparece no contato e no botão flutuante",async({page})=>{
   await page.addInitScript(()=>{localStorage.setItem("ct-cookie-notice-v1","acknowledged")});
-  await page.goto("/");
-  await expect(page.locator(".whatsapp-float")).toHaveCount(0);
-  await expect(page.locator('a[href*="wa.me"],a[href*="api.whatsapp.com"]')).toHaveCount(0);
+  for(const viewport of [{width:1365,height:900},{width:390,height:844}]){
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    const floating=page.locator(".whatsapp-float");
+    await expect(floating).toBeVisible();
+    await expect(floating).toHaveAttribute("href","https://wa.me/5511995638859");
+    await expect(floating).toHaveAttribute("aria-label",/WhatsApp/);
+    const style=await floating.evaluate(element=>({
+      background:getComputedStyle(element).backgroundColor,
+      border:getComputedStyle(element).borderColor,
+      rect:element.getBoundingClientRect().toJSON()
+    }));
+    expect(style.background).toBe("rgb(10, 24, 40)");
+    expect(style.border).toBe("rgb(184, 149, 88)");
+    expect(style.rect.right).toBeLessThanOrEqual(viewport.width);
+    expect(style.rect.bottom).toBeLessThanOrEqual(viewport.height);
+    if(viewport.width<680) expect(style.rect.width).toBeGreaterThanOrEqual(48);
+    await page.goto("/contato/");
+    await expect(page.locator("#whatsapp")).toContainText("+55 11 99563-8859");
+    await expect(page.locator("#whatsapp a")).toHaveAttribute("href","https://wa.me/5511995638859");
+  }
 });
