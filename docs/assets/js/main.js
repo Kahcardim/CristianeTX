@@ -192,6 +192,65 @@ if(presentationCarousel){
   slides.forEach((slide)=>observer.observe(slide));
 }
 
+/* The eight service cards form one compact carousel on mobile. */
+const servicesTrack=document.querySelector("[data-services-carousel]");
+if(servicesTrack){
+  const cards=[...servicesTrack.querySelectorAll(".preview-card")];
+  const prev=document.querySelector("[data-services-prev]");
+  const next=document.querySelector("[data-services-next]");
+  const position=document.querySelector("[data-services-position]");
+  const mobile=window.matchMedia("(max-width:680px)");
+  const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
+  let index=0;
+  let scrollFrame=0;
+
+  const update=(nextIndex)=>{
+    index=Math.max(0,Math.min(cards.length-1,nextIndex));
+    if(position) position.textContent=`${index+1} de ${cards.length}`;
+    if(prev) prev.disabled=index===0;
+    if(next) next.disabled=index===cards.length-1;
+  };
+
+  const goTo=(nextIndex)=>{
+    const card=cards[Math.max(0,Math.min(cards.length-1,nextIndex))];
+    if(!card) return;
+    const trackRect=servicesTrack.getBoundingClientRect();
+    const cardRect=card.getBoundingClientRect();
+    const left=servicesTrack.scrollLeft+cardRect.left-trackRect.left-(servicesTrack.clientWidth-cardRect.width)/2;
+    servicesTrack.scrollTo({left,behavior:reducedMotion.matches?"auto":"smooth"});
+    update(cards.indexOf(card));
+  };
+
+  const syncFromScroll=()=>{
+    scrollFrame=0;
+    if(!mobile.matches) return;
+    const center=servicesTrack.getBoundingClientRect().left+servicesTrack.clientWidth/2;
+    const closest=cards.reduce((best,card,i)=>{
+      const rect=card.getBoundingClientRect();
+      const distance=Math.abs(rect.left+rect.width/2-center);
+      return distance<best.distance?{index:i,distance}:best;
+    },{index:0,distance:Infinity});
+    update(closest.index);
+  };
+
+  prev?.addEventListener("click",()=>goTo(index-1));
+  next?.addEventListener("click",()=>goTo(index+1));
+  servicesTrack.addEventListener("keydown",(event)=>{
+    if(!mobile.matches || !["ArrowLeft","ArrowRight"].includes(event.key)) return;
+    event.preventDefault();
+    goTo(index+(event.key==="ArrowRight"?1:-1));
+  });
+  servicesTrack.addEventListener("scroll",()=>{
+    if(!scrollFrame) scrollFrame=requestAnimationFrame(syncFromScroll);
+  },{passive:true});
+  mobile.addEventListener?.("change",()=>{
+    servicesTrack.tabIndex=mobile.matches?0:-1;
+    if(mobile.matches) requestAnimationFrame(syncFromScroll);
+  });
+  servicesTrack.tabIndex=mobile.matches?0:-1;
+  update(0);
+}
+
 
 /* First-visit cookie information notice. No non-essential cookies are enabled. */
 (() => {

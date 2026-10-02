@@ -189,6 +189,7 @@ main,section,.container,.hero-grid,.section-head,.preview-grid,.content-split,.f
 .preview-card p{margin:0;color:var(--muted);font-size:13px}
 .preview-card a{margin-top:auto;padding-top:20px;color:var(--navy);font-size:12px;font-weight:800;text-decoration:none}
 .preview-card a::after{content:"  ↗";color:var(--gold)}
+.services-carousel-controls{display:none}
 
 .content-split{
   display:grid;
@@ -510,6 +511,7 @@ button,input,select,textarea,.button{min-height:44px}
 
 .service-directory{border-top:1px solid var(--line)}
 .service-entry{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:28px;align-items:center;padding:30px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.service-entry[id]{scroll-margin-top:100px}
 .service-entry>span{color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.15em}
 .service-entry h2{margin:0;color:var(--navy);font:400 30px/1.15 var(--serif)}
 .service-entry p{margin:8px 0 0;color:var(--muted)}
@@ -2952,6 +2954,40 @@ html.section-snap-page.has-page-subnav{
 
   .preview-card a{
     min-height:44px;
+  }
+
+  .services-carousel-controls{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    margin-top:12px;
+  }
+
+  .services-carousel-controls button{
+    display:grid;
+    place-items:center;
+    width:44px;
+    height:44px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    background:#fff;
+    color:var(--navy);
+    font:400 24px/1 var(--serif);
+    cursor:pointer;
+  }
+
+  .services-carousel-controls button:disabled{
+    opacity:.4;
+    cursor:default;
+  }
+
+  .services-carousel-controls [data-services-position]{
+    min-width:5ch;
+    color:var(--navy);
+    font-size:13px;
+    font-weight:700;
+    text-align:center;
   }
 }
 
