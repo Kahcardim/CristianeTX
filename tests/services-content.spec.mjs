@@ -72,3 +72,31 @@ test("identidade e Instagram fornecidos aparecem no site",async({page})=>{
   await expect(page.locator(".contact-channel a[href^='https://www.instagram.com/']"))
     .toHaveAttribute("href","https://www.instagram.com/adv.cristianeteixeiraa/");
 });
+
+test("título e descrição de orientação ficam centralizados",async({page})=>{
+  for(const viewport of [{width:1536,height:864},{width:393,height:852}]){
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    const positions=await page.locator(".home-guides-head").evaluate(element=>{
+      const title=element.querySelector("h2").getBoundingClientRect();
+      const description=element.querySelector(":scope > p").getBoundingClientRect();
+      const section=element.getBoundingClientRect();
+      const center=rect=>rect.left+rect.width/2;
+      return {
+        sectionCenter:center(section),titleCenter:center(title),descriptionCenter:center(description),
+        titleBottom:title.bottom,descriptionTop:description.top
+      };
+    });
+    expect(Math.abs(positions.titleCenter-positions.sectionCenter)).toBeLessThanOrEqual(2);
+    expect(Math.abs(positions.descriptionCenter-positions.sectionCenter)).toBeLessThanOrEqual(2);
+    expect(positions.descriptionTop).toBeGreaterThan(positions.titleBottom);
+  }
+});
+
+test("apresentação pública usa o nome sem título profissional",async({page})=>{
+  for(const route of ["/","/escritorio/","/contato/"]){
+    await page.goto(route);
+    const text=await page.locator("body").innerText();
+    expect(text).not.toMatch(/\bDra\./i);
+  }
+});
